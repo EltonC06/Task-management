@@ -49,11 +49,6 @@ public class Program {
 		Task tk = new Task(name, importance, urgence, status);
 		System.out.println(tk);
 		
-		
-		
-		
-		
-		
 	}
 
 }
