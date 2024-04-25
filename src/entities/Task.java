@@ -1,6 +1,7 @@
 package entities;
 
-import java.sql.Date;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 
 import entities.enums.ImportancePriority;
 import entities.enums.TaskStatus;
@@ -15,16 +16,17 @@ public class Task {
 	private UrgencePriority urgence;
 	private TaskStatus status;
 	
+	private SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
 	
 	public Task() {
 		
 	}
 
 
-	public Task(String task, ImportancePriority importance, UrgencePriority urgence, TaskStatus status) {
+	public Task(String task, Date date, ImportancePriority importance, UrgencePriority urgence, TaskStatus status) {
 		super();
 		this.task = task;
-		// this.date = date;
+		this.date = date;
 		this.importance = importance;
 		this.urgence = urgence;
 		this.status = status;
@@ -79,12 +81,44 @@ public class Task {
 	public void setStatus(TaskStatus status) {
 		this.status = status;
 	}
-
-
+	
+	public boolean getBooleanStatus() {   // this return True if its done, will help the deleteAllDone from ListOfTasks
+		if (getStatus().name().toUpperCase() != "DONE") {
+			return false;
+		}
+		else {
+			return true;
+		}
+	}
+	
+	public String whatToDoWith() {  // here i transform the list in: do, schedule, delegate or delete. So its get easier to put in a table
+		if (getImportance().name() == "IMPORTANT") {
+			if (getUrgence().name() == "URGENT") {
+				return "Do";
+			}
+			else {
+				return "Decide";
+			}
+		}
+		else {
+			if(getUrgence().name() == "URGENT") {
+				return "Delegate";
+			}
+			else {
+				return "Delete";
+			}
+		}
+	}
 	@Override
 	public String toString() {
-		return "Task [task=" + task + ", importance=" + importance + ", urgence=" + urgence
-				+ ", status=" + status + "]";
+		return task + ", " 
+	+ sdf.format(date) 
+	+ ", " 
+	+ importance.name().toLowerCase().replace("_", " ") 
+	+ " and " 
+	+ urgence.name().toLowerCase().replace("_", " ")
+	+ ", " 
+	+ status.name().toLowerCase();
 	}
 	
 	

@@ -1,9 +1,12 @@
 package application;
 
-import java.sql.Date;
+import java.util.Date;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.Locale;
 import java.util.Scanner;
 
+import entities.ListOfTasks;
 import entities.Task;
 import entities.enums.ImportancePriority;
 import entities.enums.TaskStatus;
@@ -11,26 +14,23 @@ import entities.enums.UrgencePriority;
 
 public class Program {
 
-	public static void main(String[] args) {
+	public static void main(String[] args) throws ParseException {
 		Locale.setDefault(Locale.US);
 		Scanner sc = new Scanner(System.in);
+		SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
 		ImportancePriority importance = null;
 		UrgencePriority urgence = null;
 		int importanceValue;
 		int urgenceValue;
+		Date date = null;
 		
 		String name;
-		Date date;
-
+		/*
 		System.out.println("Enter data about your task:");
-		System.out.print("Name: ");
-		name = sc.next();
+		System.out.print("Task name: ");
+		name = sc.nextLine();
 		System.out.print("Importance:\n[1] Important\n[2] Not important\nType here: "); // I put numbers so the program wont look like too complex for the user
 		importanceValue = sc.nextInt();
-		System.out.print("Urgence:\n[1] Urgent\n[2] Not urgente\nType here: ");
-		urgenceValue = sc.nextInt();
-		System.out.println("Status: ");
-		TaskStatus status = TaskStatus.valueOf(sc.next());
 		if (importanceValue == 1) {
 			importance = ImportancePriority.valueOf("IMPORTANT");
 		}
@@ -38,6 +38,8 @@ public class Program {
 			importance = ImportancePriority.valueOf("NOT_IMPORTANT");
 		}
 		
+		System.out.print("Urgence:\n[1] Urgent\n[2] Not urgent\nType here: ");
+		urgenceValue = sc.nextInt();
 		if (urgenceValue == 1) {
 			urgence = UrgencePriority.valueOf("URGENT");
 		}
@@ -45,10 +47,45 @@ public class Program {
 			urgence = UrgencePriority.valueOf("NOT_URGENT");
 		}
 		
+		System.out.print("Date:");
+		try {
+			date = sdf.parse(sc.next());
+		} catch (ParseException e) {
+			e.printStackTrace();
+		}
 		
-		Task tk = new Task(name, importance, urgence, status);
+		
+		System.out.print("Status: ");
+		TaskStatus status = TaskStatus.valueOf(sc.next());
+
+		Task tk = new Task(name, date, importance, urgence, status);
 		System.out.println(tk);
+		*/
 		
+		ListOfTasks taskList = new ListOfTasks();
+		
+		taskList.addTask(new Task("Tarefa1", sdf.parse("26/10/2020"), ImportancePriority.valueOf("IMPORTANT"), UrgencePriority.valueOf("URGENT"), TaskStatus.valueOf("PENDING")));
+		
+		taskList.addTask(new Task("Tarefa2", sdf.parse("24/10/2020"), ImportancePriority.valueOf("NOT_IMPORTANT"), UrgencePriority.valueOf("URGENT"), TaskStatus.valueOf("DOING")));
+		
+		taskList.addTask(new Task("Tarefa3", sdf.parse("23/10/2020"), ImportancePriority.valueOf("NOT_IMPORTANT"), UrgencePriority.valueOf("NOT_URGENT"), TaskStatus.valueOf("DONE")));
+		
+		taskList.addTask(new Task("Tarefa4", sdf.parse("22/10/2020"), ImportancePriority.valueOf("IMPORTANT"), UrgencePriority.valueOf("NOT_URGENT"), TaskStatus.valueOf("PENDING")));
+		
+		taskList.addTask(new Task("Tarefa5", sdf.parse("22/10/2010"), ImportancePriority.valueOf("IMPORTANT"), UrgencePriority.valueOf("NOT_URGENT"), TaskStatus.valueOf("DONE")));
+		
+		taskList.getAllTasks();
+		
+		System.out.println("-----------------");
+		
+		// how do i update list? problem in set a different status and before delete all done (the changed DONE->another will be deleted too)
+		
+		taskList.separateByEisenhower();
+		
+
+	
+	
+	
 	}
 
 }
