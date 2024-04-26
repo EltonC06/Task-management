@@ -82,7 +82,7 @@ public class Task {
 		this.status = status;
 	}
 	
-	public boolean getBooleanStatus() {   // this return True if its done, will help the deleteAllDone from ListOfTasks
+	public Boolean getBooleanStatus() {   // this return True if its done, will help the deleteAllDone from ListOfTasks
 		if (getStatus().name().toUpperCase() != "DONE") {
 			return false;
 		}
@@ -109,6 +109,18 @@ public class Task {
 			}
 		}
 	}
+	
+	public String toCSV() {
+		return task + ","
+				+ sdf.format(date)
+				+ ","
+				+ importance.name()
+				+ ","
+				+ urgence.name()
+				+ ","
+				+ status.name();
+	}
+	
 	@Override
 	public String toString() {
 		return task + ", " 

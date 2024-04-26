@@ -1,11 +1,13 @@
 package application;
 
 import java.util.Date;
+import java.io.IOException;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Locale;
 import java.util.Scanner;
 
+import entities.CsvReader;
 import entities.ListOfTasks;
 import entities.Task;
 import entities.enums.ImportancePriority;
@@ -14,7 +16,7 @@ import entities.enums.UrgencePriority;
 
 public class Program {
 
-	public static void main(String[] args) throws ParseException {
+	public static void main(String[] args) throws ParseException, IOException {
 		Locale.setDefault(Locale.US);
 		Scanner sc = new Scanner(System.in);
 		SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
@@ -60,7 +62,7 @@ public class Program {
 
 		Task tk = new Task(name, date, importance, urgence, status);
 		System.out.println(tk);
-		*/
+		
 		
 		ListOfTasks taskList = new ListOfTasks();
 		
@@ -74,18 +76,17 @@ public class Program {
 		
 		taskList.addTask(new Task("Tarefa5", sdf.parse("22/10/2010"), ImportancePriority.valueOf("IMPORTANT"), UrgencePriority.valueOf("NOT_URGENT"), TaskStatus.valueOf("DONE")));
 		
+		*/
+		ListOfTasks taskList = new ListOfTasks();
+		CsvReader cr = new CsvReader();
+		
 		taskList.getAllTasks();
+		System.out.println("------");
+		// thing to do: find how do i update the ListOfTasks from the CSV archive. The inverse its done: CsvReader.UpdateAllData(
 		
-		System.out.println("-----------------");
+		cr.reader();
 		
-		// how do i update list? problem in set a different status and before delete all done (the changed DONE->another will be deleted too)
 		
-		taskList.separateByEisenhower();
-		
-
-	
-	
-	
 	}
 
 }

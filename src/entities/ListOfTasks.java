@@ -35,9 +35,9 @@ public class ListOfTasks {
 	}
 	
 	public void deleteAllDone() {
-		for (int i = 0; i< taskList.size(); i++) {
-			boolean booleanStatus = taskList.get(i).getBooleanStatus();
-			if (booleanStatus = true) {
+		for (int i = 0; i < taskList.size(); i++) {
+			if (taskList.get(i).getBooleanStatus() == true) {  // this will delete if boolean status return True. This function only return if its status is DONE
+				System.out.println("Boolean status of " + i + "º task = " + taskList.get(i).getBooleanStatus());
 				deleteTaskById(i);
 			}
 		}
@@ -71,6 +71,14 @@ public class ListOfTasks {
 		}
 		System.out.println("---------------");
 	}
+	
+	public void updateFromCSVtoListOfTasks() {
+		CsvReader CsvReader = new CsvReader();
+	}
+	
+	
+	
+	
 	
 	@Override
 	public String toString() {
