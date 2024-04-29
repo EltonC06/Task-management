@@ -83,11 +83,11 @@ public class Task {
 	}
 	
 	public Boolean getBooleanStatus() {   // this return True if its done, will help the deleteAllDone from ListOfTasks
-		if (getStatus().name().toUpperCase() != "DONE") {
-			return false;
+		if (getStatus().name() == "DONE") {
+			return true;
 		}
 		else {
-			return true;
+			return false;
 		}
 	}
 	

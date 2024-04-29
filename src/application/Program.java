@@ -65,26 +65,21 @@ public class Program {
 		
 		
 		ListOfTasks taskList = new ListOfTasks();
-		
-		taskList.addTask(new Task("Tarefa1", sdf.parse("26/10/2020"), ImportancePriority.valueOf("IMPORTANT"), UrgencePriority.valueOf("URGENT"), TaskStatus.valueOf("PENDING")));
-		
-		taskList.addTask(new Task("Tarefa2", sdf.parse("24/10/2020"), ImportancePriority.valueOf("NOT_IMPORTANT"), UrgencePriority.valueOf("URGENT"), TaskStatus.valueOf("DOING")));
-		
-		taskList.addTask(new Task("Tarefa3", sdf.parse("23/10/2020"), ImportancePriority.valueOf("NOT_IMPORTANT"), UrgencePriority.valueOf("NOT_URGENT"), TaskStatus.valueOf("DONE")));
-		
-		taskList.addTask(new Task("Tarefa4", sdf.parse("22/10/2020"), ImportancePriority.valueOf("IMPORTANT"), UrgencePriority.valueOf("NOT_URGENT"), TaskStatus.valueOf("PENDING")));
-		
-		taskList.addTask(new Task("Tarefa5", sdf.parse("22/10/2010"), ImportancePriority.valueOf("IMPORTANT"), UrgencePriority.valueOf("NOT_URGENT"), TaskStatus.valueOf("DONE")));
-		
 		*/
+		
 		ListOfTasks taskList = new ListOfTasks();
 		CsvReader cr = new CsvReader();
 		
-		taskList.getAllTasks();
-		System.out.println("------");
-		// thing to do: find how do i update the ListOfTasks from the CSV archive. The inverse its done: CsvReader.UpdateAllData(
+		taskList.updateFromCSVtoListOfTasks();
 		
-		cr.reader();
+
+		taskList.getAllTasks();
+		
+		// Now i can update all tasks of .csv to the program e do the reverse too
+		
+		// storage system working
+		
+		// i need to optimize somethings, like the CsvReader, creating another class to contains only the link of archive
 		
 		
 	}

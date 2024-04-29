@@ -2,6 +2,7 @@ package entities;
 
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
+import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
@@ -57,11 +58,45 @@ public class CsvReader {
 		fw.close();
 	}
 	
-	public void readOneLine() throws IOException {
+	public String readOneLine() throws IOException {
 		FileReader fr = new FileReader("C:\\temp\\ws-eclipse\\taskManagement\\src\\AllTasks.csv"); // trying to read one line so i can transform one line to a Task and implement in the ListOfTasks
 		BufferedReader br = new BufferedReader(fr);   // this function will be complemented by another in the ListOfTasks function
 		String line = br.readLine();
 		
+		while (true) {
+			line = br.readLine();
+			break;
+		}
+		
+		return line;
+		// everytime i use this function its read only the first line because everytime tha position of readline resets to start
 	}
+	
+	public String readSpecificLine(int specific) throws IOException {
+		FileReader fr = new FileReader("C:\\temp\\ws-eclipse\\taskManagement\\src\\AllTasks.csv"); // trying to read one line so i can transform one line to a Task and implement in the ListOfTasks
+		BufferedReader br = new BufferedReader(fr);   // this function will be complemented by another in the ListOfTasks function
+		for (int i = 0; i<specific; i++) {  // reading all lines after reach the specified line
+			br.readLine();
+		}
+		
+		String line = br.readLine();
+		
+		return line; 
+	}
+	
+	public Integer numberOfLines() throws IOException {
+		FileReader fr = new FileReader("C:\\temp\\ws-eclipse\\taskManagement\\src\\AllTasks.csv"); // trying to read one line so i can transform one line to a Task and implement in the ListOfTasks
+		BufferedReader br = new BufferedReader(fr);   // this function will be complemented by another in the ListOfTasks function
+		int lines = 0;
+		while (br.readLine() != null) lines++; // simple line count
+		br.close();
+		
+		return lines;
+		
+		
+		
+	}
+	
+	
 	
 }
