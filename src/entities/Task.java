@@ -22,7 +22,6 @@ public class Task {
 		
 	}
 
-
 	public Task(String task, Date date, ImportancePriority importance, UrgencePriority urgence, TaskStatus status) {
 		super();
 		this.task = task;
@@ -32,51 +31,41 @@ public class Task {
 		this.status = status;
 	}
 
-
 	public String getTask() {
 		return task;
 	}
-
 
 	public void setTask(String task) {
 		this.task = task;
 	}
 
-
 	public Date getDate() {
 		return date;
 	}
-
 
 	public void setDate(Date date) {
 		this.date = date;
 	}
 
-
 	public ImportancePriority getImportance() {
 		return importance;
 	}
-
 
 	public void setImportance(ImportancePriority importance) {
 		this.importance = importance;
 	}
 
-
 	public UrgencePriority getUrgence() {
 		return urgence;
 	}
-
 
 	public void setUrgence(UrgencePriority urgence) {
 		this.urgence = urgence;
 	}
 
-
 	public TaskStatus getStatus() {
 		return status;
 	}
-
 
 	public void setStatus(TaskStatus status) {
 		this.status = status;
@@ -110,7 +99,7 @@ public class Task {
 		}
 	}
 	
-	public String toCSV() {
+	public String toCSV() {   // i use this to update all data in tasklist to the .csv archive, look the CsvReader's updateAllData function
 		return task + ","
 				+ sdf.format(date)
 				+ ","
@@ -132,9 +121,4 @@ public class Task {
 	+ ", " 
 	+ status.name().toLowerCase();
 	}
-	
-	
-	
-	
-	
 }

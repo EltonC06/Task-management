@@ -4,9 +4,7 @@ import java.io.IOException;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Collection;
 import java.util.Collections;
-import java.util.Date;
 import java.util.List;
 
 import entities.enums.ImportancePriority;
@@ -18,6 +16,7 @@ public class ListOfTasks {
 	private List<Task> taskList = new ArrayList<>();
 	
 	private SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
+	
 	
 	public ListOfTasks() {
 		
@@ -46,12 +45,12 @@ public class ListOfTasks {
 		}
 	}
 	
-	public void deleteAllDone() throws IOException { // everytime i delete a taskById the size of List changes, i need to solve this
-		CsvReader cr = new CsvReader();
+	public void deleteAllDone() throws IOException {
+
 		List <Integer> listOfTasksTrues = new ArrayList<Integer>();
 		for (int i = 0; i < taskList.size(); i++) {
 			if (taskList.get(i).getBooleanStatus() == true) {  // this will delete if boolean status return True. This function only return if its status is DONE
-				System.out.println("Boolean status of " + i + "º task = " + taskList.get(i).getBooleanStatus());
+				// System.out.println("Boolean status of " + i + "º task = " + taskList.get(i).getBooleanStatus());
 				listOfTasksTrues.add(i);
 			}
 		}
@@ -105,14 +104,8 @@ public class ListOfTasks {
 			task.setStatus(TaskStatus.valueOf(List[4]));
 			taskList.add(task);  // updating a task to the taskList
 		}
-		
-		
 	}
-	
-	
-	
-	
-	
+
 	@Override
 	public String toString() {
 		return "Everything [tasks=" + taskList + "]";
