@@ -94,6 +94,7 @@ public class ListOfTasks {
 	public void updateFromCSVtoListOfTasks() throws IOException, ParseException {
 		CsvReader CsvReader = new CsvReader();
 		String List[];
+		taskList.clear();
 		for (int i = 0; i<CsvReader.numberOfLines(); i++) {
 			List = CsvReader.readSpecificLine(i).split(",");  // separing all element of a Task before the "," so i can add its separately to update the tasklist
 			Task task = new Task();
