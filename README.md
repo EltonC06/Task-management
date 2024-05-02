@@ -30,7 +30,8 @@ src -> application -> program
 
 Programa somente testado em Windows
 
-Caso queira mudar o local de armazenamento das tarefas você pode acessar src -> entities -> CsvLink e mudar a função csvPathLink pelo caminho do arquivo desejado
+Caso queira mudar o local de armazenamento das tarefas você pode acessar:
+src -> entities -> CsvLink e mudar a função csvPathLink pelo caminho do arquivo desejado
 
 # Como você pode contribuir
 
