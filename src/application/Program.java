@@ -4,7 +4,6 @@ import java.util.Date;
 import java.util.InputMismatchException;
 import java.io.IOException;
 import java.text.ParseException;
-import java.text.SimpleDateFormat;
 import java.util.Locale;
 import java.util.Scanner;
 
@@ -21,7 +20,6 @@ public class Program {
 		
 		Locale.setDefault(Locale.US);
 		Scanner sc = new Scanner(System.in);
-		SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
 		
 		ImportancePriority importance = null;
 		UrgencePriority urgence = null;
@@ -42,7 +40,7 @@ public class Program {
 		System.out.println("WELCOME to the simple task management application!");
 		System.out.println("-=-=-=-=-=-=-=-=-=-=-");
 		while (true) {
-
+			System.out.println("\n-=-=-=-=-");
 			System.out.println("What do you want to do?");
 			System.out.println("[1] See all tasks registred");
 			System.out.println("[2] Implement task");
@@ -59,26 +57,27 @@ public class Program {
 						break;
 					}
 					else {
-						System.out.print("Please, try again: ");
+						System.out.print("Please, try again:");
 					}
 				} catch(InputMismatchException e) {
-					System.out.print("Please, enter a valid value: ");
+					System.out.print("Please, enter a valid value:");
 					sc.next();
 				}
 			}
 			
+			System.out.println();
+			
 			if(whatToDo == 1) {
-				System.out.println("Loading file...");
 				listOfTasks.updateFromCSVtoListOfTasks();
 				listOfTasks.separateByEisenhower();
 			}
 			
 			if(whatToDo == 2) {		
 				System.out.println("Enter data about your task:");
-				System.out.print("Task name: ");
+				System.out.print("Task name:");
 				sc.nextLine();
 				name = sc.nextLine();
-				System.out.print("Importance:\n[1] Important\n[2] Not important\nType here: "); // I put numbers so the program wont look like too complex for the user
+				System.out.print("Importance:\n[1] Important\n[2] Not important\nType here:"); // I put numbers so the program wont look like too complex for the user
 				while (true) {
 					try {
 						importanceValue = sc.nextInt();
@@ -86,10 +85,10 @@ public class Program {
 							break;
 						}
 						else {
-							System.out.print("Please, try again: ");
+							System.out.print("Please, try again:");
 						}	
 					} catch (InputMismatchException e) {
-						System.out.println("Please, enter a valid value: ");
+						System.out.print("Please, enter a valid value:");
 						sc.next();
 					}
 				}
@@ -101,18 +100,18 @@ public class Program {
 					importance = ImportancePriority.valueOf("NOT_IMPORTANT");
 				}
 				
-				System.out.print("Urgence:\n[1] Urgent\n[2] Not urgent\nType here: ");
+				System.out.print("Urgence:\n[1] Urgent\n[2] Not urgent\nType here:");
 				while (true) {
 					try {
 						urgenceValue = sc.nextInt();
-						if (urgenceValue > 0 && importanceValue < 3) {
+						if (urgenceValue > 0 && urgenceValue < 3) {
 							break;
 						}
 						else {
-							System.out.print("Please, try again: ");
+							System.out.print("Please, try again:");
 						}
 					} catch (InputMismatchException e) {
-						System.out.println("Plase, enter a valid value: ");
+						System.out.print("Please, enter a valid value:");
 						sc.next();
 					}
 				}
@@ -123,28 +122,21 @@ public class Program {
 					urgence = UrgencePriority.valueOf("NOT_URGENT");
 				}
 				
-				System.out.print("Date [dd/mm/yyyy]:");
-				try {
-					date = sdf.parse(sc.next());
-				} catch (ParseException e) {
-					e.printStackTrace();
-				}
+				date = new Date();
 				
-				System.out.print("Status:\n[Done or Doing or Pending]\nType here: ");
+				System.out.print("Status:\n[Done or Doing or Pending]\nType here:");
 				TaskStatus status;
 				while (true) {
 					try {
 						status = TaskStatus.valueOf(sc.next().toUpperCase().strip());
 						break;
 					} catch (IllegalArgumentException e) {
-						System.out.print("Please, enter a valid value: ");
-						sc.next();
+						System.out.print("Please, enter a valid value:");
 					}
 				}
 				
-				
 				Task task = new Task(name, date, importance, urgence, status);
-				System.out.println("-=-=-\nTask saved\n-=-=-");
+				System.out.println("\n-=-=-\nTask saved\n-=-=-");
 				
 				listOfTasks.addTask(task);
 				csvReader.updateAllData(listOfTasks);
@@ -153,48 +145,69 @@ public class Program {
 			if (whatToDo == 3) {
 				listOfTasks.deleteAllDone();
 				csvReader.updateAllData(listOfTasks);
+				
+				System.out.println("-=-=-\nAll tasks 'done' deleted successfully!\n-=-=-");
 			}
 			
 			if (whatToDo == 4) {
 				System.out.println("Choose the task Id to change its status:");
+				int taskId = 0;
 				listOfTasks.getAllTasks();
-				System.out.print("\nType here:");
-				int taskId = sc.nextInt();
-				System.out.print("Change to its new status\n[Done or Doing or Pending]\nType here: ");
+				System.out.println();
 				while (true) {
+					System.out.print("Type here:");
+						try {
+							taskId = sc.nextInt();
+							if (taskId >= 0 && taskId < csvReader.numberOfLines()) {
+								break;
+						}
+						else {
+							System.out.print("Please, enter a valid value:\n");
+						}
+					} catch (InputMismatchException e) {
+						System.out.print("Please, enter a valid value:\n");
+					} catch (IndexOutOfBoundsException e) {
+						System.out.print("Please, enter a valid value:\n");
+					}
+				}
+				
+				System.out.print("Change to its new status\n[Done or Doing or Pending]\n");
+				while (true) {
+					System.out.print("Type here:");
 					try {
 						listOfTasks.getTasks().get(taskId).setStatus(TaskStatus.valueOf(sc.next().toUpperCase().strip()));
 						break;
 					} catch (IllegalArgumentException e) {
-						System.out.println("Please, enter a valid value: ");
-						sc.next();
-					}
+						System.out.print("Please, enter a valid value:\n");
+					} 	
 				}
 				csvReader.updateAllData(listOfTasks);
+				System.out.println("\n-=-=-\nStatus of task [" + taskId + "] changed successfully!\n-=-=-");
 			}
 			
-			
 			if (whatToDo == 5) {
-				System.out.println("Choose the task Id to delete it:");
+				System.out.println("Choose the task Id to delete it:\n");
 				listOfTasks.getAllTasks();
-				System.out.print("\nType here:");
 				int decision;
 				while (true) {
+					System.out.print("Type here:");
 					try {
 						decision = sc.nextInt();
 						if (decision >= 0 && decision < csvReader.numberOfLines()) {
 							break;
 						}
 						else {
-							System.out.print("Please, try again: ");
+							System.out.print("Please, enter a valid value:\n");
 						}
 					} catch (InputMismatchException e) {
-						System.out.print("Please, enter a valid value: ");
+						System.out.print("Please, enter a valid value:\n");
 						sc.next();
 					}
 				}
 				listOfTasks.deleteTaskById(decision);
 				csvReader.updateAllData(listOfTasks);
+				
+				System.out.println("\n-=-=-\nTask number [" + decision + "] deleted successfully!\n-=-=-");
 			}
 			
 			if (whatToDo == 6) {
@@ -208,10 +221,10 @@ public class Program {
 							break;
 						}
 						else {
-							System.out.print("Please, try again: ");
+							System.out.print("Please, try again:");
 						}
 					} catch (InputMismatchException e) {
-						System.out.println("Please, enter a valid value: ");
+						System.out.print("Please, enter a valid value:");
 						sc.next();
 					}
 				}
@@ -219,11 +232,11 @@ public class Program {
 				if (decision == 1) {
 					csvReader.resetStorage();
 					listOfTasks.updateFromCSVtoListOfTasks();
-					System.out.println("Storage reseted.");
+					System.out.println("\n-=-=-\nStorage reseted successfully!\n-=-=-");
 				}
 				
 				else {
-					System.out.println("Not reseted.");
+					System.out.println("\n-=-=-\nStorage not reseted.\n-=-=-");
 				}
 			}
 			if (whatToDo == 7) {
@@ -233,9 +246,7 @@ public class Program {
 		} // end of big loop
 	
 		System.out.println("Saving and quitting progam...");
+		System.out.println("System saved and shutted down!");
 		sc.close();
-	
 	}
 }
-
-

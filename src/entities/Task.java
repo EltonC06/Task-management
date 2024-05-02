@@ -112,7 +112,7 @@ public class Task {
 	
 	@Override
 	public String toString() {
-		return task + ", " 
+		return task + ", registred on " 
 	+ sdf.format(date) 
 	+ ", " 
 	+ importance.name().toLowerCase().replace("_", " ") 
