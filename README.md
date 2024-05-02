@@ -8,6 +8,10 @@ Task management é uma aplicação back end construída para fins de aprendizado
 A aplicação consiste em um algoritmo que permite ao usuário armazenar tarefas e classificá-las entre Importante ou não importante e Urgente ou não urgente.
 Essa classificação de tarefas permite ao programa separá-las de acordo com princípios da matriz de Eisenhower.
 
+# Matriz de Eisenhower (somente ilustração)
+![Eisenhower](https://github.com/EltonC06/Task-management/assets/103285152/7621f57e-3c71-4abc-8118-59692eac5ed5)
+
+
 # Tecnologias utilizadas
 ## Back end
 - Java
