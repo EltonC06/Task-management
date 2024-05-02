@@ -1,4 +1,4 @@
-# Currency converter
+# Task Management
 (https://github.com/EltonC06/Task-management/blob/main/LICENSE)
 
 # Sobre o projeto  
