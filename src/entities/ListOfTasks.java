@@ -63,30 +63,76 @@ public class ListOfTasks {
 	}
 	
 	public void separateByEisenhower() {
+		int doQuantity = 0;
+		int decideQuantity = 0;
+		int delegateQuantity = 0;
+		int deleteQuantity = 0;
+		
+
+		for (int i = 0; i<taskList.size(); i++) {  // this will help me to personalize a topic if there isn't tasks there
+			if (taskList.get(i).whatToDoWith() == "Do") {
+				doQuantity++;
+			}
+			else if (taskList.get(i).whatToDoWith() == "Decide") {
+				decideQuantity++;
+			}
+			else if (taskList.get(i).whatToDoWith() == "Delegate") {
+				delegateQuantity++;
+			}
+			else if (taskList.get(i).whatToDoWith() == "Delete") {
+				deleteQuantity++;
+			}
+		}
+		
 		System.out.println("---------------");
 		System.out.println("=== Do ===");
-		for (int i = 0; i<taskList.size(); i++) {
-			if (taskList.get(i).whatToDoWith() == "Do") {
-				System.out.println(taskList.get(i));
+		if (doQuantity > 0) {
+			for (int i = 0; i<taskList.size(); i++) {
+				
+				if (taskList.get(i).whatToDoWith() == "Do") {
+					System.out.println(taskList.get(i));
+				}
 			}
 		}
+		else {
+			System.out.println("No tasks");
+		}
+
 		System.out.println("=== Schedule ===");
-		for (int i = 0; i<taskList.size(); i++) {
-			if (taskList.get(i).whatToDoWith() == "Decide") {
-				System.out.println(taskList.get(i));
+		if (decideQuantity > 0) {
+			for (int i = 0; i<taskList.size(); i++) {
+				if (taskList.get(i).whatToDoWith() == "Decide") {
+					System.out.println(taskList.get(i));
+				}
 			}
 		}
+		else {
+			System.out.println("No tasks");
+		}
+		
 		System.out.println("=== Delegate ===");
-		for (int i = 0; i<taskList.size(); i++) {
-			if (taskList.get(i).whatToDoWith() == "Delegate") {
-				System.out.println(taskList.get(i));
+		if (delegateQuantity > 0) {
+			
+			for (int i = 0; i<taskList.size(); i++) {
+				if (taskList.get(i).whatToDoWith() == "Delegate") {
+					System.out.println(taskList.get(i));
+				}
 			}
 		}
+		else {
+			System.out.println("No tasks");
+		}
+		
 		System.out.println("=== Delete ===");
-		for (int i = 0; i<taskList.size(); i++) {
-			if (taskList.get(i).whatToDoWith() == "Delete") {
-				System.out.println(taskList.get(i));
+		if (deleteQuantity > 0) {
+			for (int i = 0; i<taskList.size(); i++) {
+				if (taskList.get(i).whatToDoWith() == "Delete") {
+					System.out.println(taskList.get(i));
+				}
 			}
+		}
+		else {
+			System.out.println("No tasks");
 		}
 		System.out.println("---------------");
 	}

@@ -85,7 +85,7 @@ public class CsvReader {
 	}
 	
 	public Integer numberOfLines() throws IOException {
-		FileReader fr = new FileReader("C:\\temp\\ws-eclipse\\taskManagement\\src\\AllTasks.csv"); // trying to read one line so i can transform one line to a Task and implement in the ListOfTasks
+		FileReader fr = new FileReader(CsvLink.csvPathLink()); // trying to read one line so i can transform one line to a Task and implement in the ListOfTasks
 		BufferedReader br = new BufferedReader(fr);   // this function will be complemented by another in the ListOfTasks function
 		
 		int lines = 0;
