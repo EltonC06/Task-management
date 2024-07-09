@@ -150,65 +150,83 @@ public class Program {
 			}
 			
 			if (whatToDo == 4) {
-				System.out.println("Choose the task Id to change its status:");
-				int taskId = 0;
-				listOfTasks.getAllTasks();
-				System.out.println();
-				while (true) {
+				if (listOfTasks.getTasks().size() == 0) {
+					System.out.println("-=-=-\nNo tasks to change status\n-=-=-");
+				}
+				else {
+					System.out.println("Choose the task Id to change its status:");
+					int taskId = 0;
+					listOfTasks.getAllTasks();
+					System.out.println();
 					System.out.print("Type here:");
+					while (true) {
 						try {
 							taskId = sc.nextInt();
 							if (taskId >= 0 && taskId < csvReader.numberOfLines()) {
+								
 								break;
+							}
+							else {
+								System.out.print("Please, try again:");
+							}
 						}
-						else {
-							System.out.print("Please, enter a valid value:\n");
+						catch(InputMismatchException e) {
+							System.out.print("Please, try again:");
+							sc.next(); // buffer cleaner
 						}
-					} catch (InputMismatchException e) {
-						System.out.print("Please, enter a valid value:\n");
-					} catch (IndexOutOfBoundsException e) {
-						System.out.print("Please, enter a valid value:\n");
+						
 					}
-				}
-				
-				System.out.print("Change to its new status\n[Done or Doing or Pending]\n");
-				while (true) {
+					
+					System.out.print("Change to its new status\n[Done or Doing or Pending]\n");
 					System.out.print("Type here:");
-					try {
-						listOfTasks.getTasks().get(taskId).setStatus(TaskStatus.valueOf(sc.next().toUpperCase().strip()));
-						break;
-					} catch (IllegalArgumentException e) {
-						System.out.print("Please, enter a valid value:\n");
-					} 	
+					while (true) {
+						try {
+							listOfTasks.getTasks().get(taskId).setStatus(TaskStatus.valueOf(sc.next().toUpperCase().strip()));
+							break;
+						} catch (IllegalArgumentException e) {
+							System.out.print("Please, enter a valid value:");
+						} 	
+					}
+					csvReader.updateAllData(listOfTasks);
+					System.out.println("\n-=-=-\nStatus of task [" + taskId + "] changed successfully!\n-=-=-");
 				}
-				csvReader.updateAllData(listOfTasks);
-				System.out.println("\n-=-=-\nStatus of task [" + taskId + "] changed successfully!\n-=-=-");
+					
 			}
+
 			
 			if (whatToDo == 5) {
-				System.out.println("Choose the task Id to delete it:\n");
-				listOfTasks.getAllTasks();
-				int decision;
-				while (true) {
-					System.out.print("Type here:");
-					try {
-						decision = sc.nextInt();
-						if (decision >= 0 && decision < csvReader.numberOfLines()) {
-							break;
-						}
-						else {
-							System.out.print("Please, enter a valid value:\n");
-						}
-					} catch (InputMismatchException e) {
-						System.out.print("Please, enter a valid value:\n");
-						sc.next();
-					}
-				}
-				listOfTasks.deleteTaskById(decision);
-				csvReader.updateAllData(listOfTasks);
 				
-				System.out.println("\n-=-=-\nTask number [" + decision + "] deleted successfully!\n-=-=-");
+				if (listOfTasks.getTasks().size() == 0) {
+					System.out.println("-=-=-\nNo tasks to delete\n-=-=-");
+				}
+				else {
+					System.out.println("Choose the task Id to delete it:\n");
+					listOfTasks.getAllTasks();
+					int decision;
+					System.out.print("Type here:");
+					while (true) {
+						try {
+							decision = sc.nextInt();
+							if (decision >= 0 && decision < csvReader.numberOfLines()) {
+								break;
+							}
+							else {
+								System.out.print("Please, enter a valid value:");
+							}
+						} catch (InputMismatchException e) {
+							System.out.print("Please, enter a valid value:");
+							sc.next();
+						}
+					}
+					listOfTasks.deleteTaskById(decision);
+					csvReader.updateAllData(listOfTasks);
+					
+					System.out.println("\n-=-=-\nTask number [" + decision + "] deleted successfully!\n-=-=-");
+				}
+							
 			}
+				
+				
 			
 			if (whatToDo == 6) {
 				System.out.println("[WARNING] Are you sure do you want to do this? (This process can't be reversed)\n[1] Yes\n[2] No");
