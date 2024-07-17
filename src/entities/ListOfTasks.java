@@ -1,18 +1,12 @@
 package entities;
 
 import java.io.IOException;
-import java.sql.Connection;
-import java.sql.ResultSet;
-import java.sql.SQLException;
-import java.sql.Statement;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
-import db.DB;
-import db.DbException;
 import entities.enums.ImportancePriority;
 import entities.enums.TaskStatus;
 import entities.enums.UrgencePriority;
@@ -20,11 +14,6 @@ import entities.enums.UrgencePriority;
 public class ListOfTasks {
 	
 	private List<Task> taskList = new ArrayList<>();
-	
-	// triplice das variaveis para trabalhar com sql
-	Connection conn = null;
-	Statement st = null;
-	ResultSet rs = null;
 	
 	private SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
 	
@@ -150,7 +139,7 @@ public class ListOfTasks {
 	
 	public void updateFromCSVtoListOfTasks() throws IOException, ParseException {
 		CsvReader CsvReader = new CsvReader();
-		String List[]; // eu vou pegar os dados,tudo,juntos e separá-los. Daí então ele vai entrar nessa lista
+		String List[];
 		taskList.clear();
 		for (int i = 0; i<CsvReader.numberOfLines(); i++) {
 			List = CsvReader.readSpecificLine(i).split(",");  // separing all element of a Task before the "," so i can add its separately to update the tasklist
@@ -163,33 +152,7 @@ public class ListOfTasks {
 			taskList.add(task);  // updating a task to the taskList
 		}
 	}
-	
-	public void updateFromSQLtoLocalList() { // vou ter que pegar todos os dados e inseri-los no Task para depois adicionar na list of tasks ( fazer isso com todos)
-		taskList.clear();
-		// pegando dados
-		try {
-			conn = DB.getConnection();
-			
-			st = conn.createStatement(); // cara que vai fazer a comunicação
-			
-			rs = st.executeQuery("select * from alltasks"); // recebendo dados
-			
-			while (rs.next()) {// esse next vai dar false quando não houver proxima linha
-				System.out.print(rs.getString("taskid")); // escolhendo a coluna 
-				System.out.print(rs.getString("date"));
-				System.out.print(rs.getString("task")); 
-				System.out.print(rs.getString("importance")); 
-				System.out.print(rs.getString("urgence")); 
-				System.out.println(rs.getString("status"));
-					
-			}
-		} catch (SQLException e) {
-			throw new DbException(e.getMessage());
-		}
-		
-	}
-	
-	
+
 	@Override
 	public String toString() {
 		return "Everything [tasks=" + taskList + "]";
