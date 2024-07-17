@@ -68,8 +68,11 @@ public class Program {
 			System.out.println();
 			
 			if(whatToDo == 1) {
+				
 				listOfTasks.updateFromCSVtoListOfTasks();
 				listOfTasks.separateByEisenhower();
+				System.out.println("\n\n\n\n\n");
+				listOfTasks.updateFromSQLtoLocalList();
 			}
 			
 			if(whatToDo == 2) {		
