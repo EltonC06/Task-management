@@ -70,7 +70,15 @@ public class ListOfTasks {
 		for (int i =0; i < listOfTasksTrues.size(); i++) {
 			deleteTaskById(listOfTasksTrues.get(i));
 		}
-		
+	}
+	
+	public void deleteAllTasks() {
+		taskList.clear();
+		try {
+			updateFromLocalListtoSQL();
+		} catch (ParseException e) {
+			e.printStackTrace();
+		}
 	}
 	
 	public void separateByEisenhower() {
@@ -181,7 +189,7 @@ public class ListOfTasks {
 				dateFormated = dateToFormat[0];
 				dateFormated = dateFormated.replace("-", "/");
 				task.setDate(sqlsdf.parse(dateFormated)); // eu formato aqui no formato do sql, mas la na classe task é formatado em padrão BR então ele se ajusta
-				task.setImportance(ImportancePriority.valueOf("IMPORTANT"));
+				task.setImportance(ImportancePriority.valueOf(rs.getString("importance").toString().toUpperCase()));
 				task.setUrgence(UrgencePriority.valueOf(rs.getString("urgence").toString().toUpperCase()));
 				task.setStatus(TaskStatus.valueOf(rs.getString("status").toString().toUpperCase()));
 				taskList.add(task);
@@ -201,9 +209,9 @@ public class ListOfTasks {
 		try {
 			conn = DB.getConnection();
 			st = conn.createStatement();
-			//st.executeUpdate("truncate table alltasks"); // limpando a tabela para poder inserir todos os dados sem erro
+			st.executeUpdate("truncate table alltasks"); // limpando a tabela para poder inserir todos os dados sem erro
 			for (int i = 0; i<taskList.size(); i++) {
-				String query = String.format("insert into alltasks value (DEFAULT, '" + sqlsdf.format(taskList.get(i).getDate()).toString().replace("/", "-") + "', '" + taskList.get(i).getTask() + "', '" + taskList.get(i).getImportance() + "', '" + taskList.get(i).getUrgence() + "', '" + taskList.get(i).getStatus() + "');"); //, "tasktestnumber1", "important", "urgent", "done" 
+				String query = String.format("insert into alltasks value (DEFAULT, '" + sqlsdf.format(taskList.get(i).getDate()).toString().replace("/", "-") + "', '" + taskList.get(i).getTask() + "', '" + taskList.get(i).getImportance().toString().toLowerCase() + "', '" + taskList.get(i).getUrgence().toString().toLowerCase() + "', '" + taskList.get(i).getStatus().toString().toLowerCase() + "');"); //, "tasktestnumber1", "important", "urgent", "done" 
 				st.execute(query);
 	
 			}

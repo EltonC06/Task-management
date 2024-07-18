@@ -34,7 +34,8 @@ public class Program {
 		ListOfTasks listOfTasks = new ListOfTasks();
 		CsvReader csvReader = new CsvReader();
 		
-		listOfTasks.updateFromCSVtoListOfTasks();
+		//listOfTasks.updateFromCSVtoListOfTasks();
+		listOfTasks.updateFromSQLtoLocalList();
 		
 		System.out.println("-=-=-=-=-=-=-=-=-=-=-");
 		System.out.println("WELCOME to the simple task management application!");
@@ -68,15 +69,25 @@ public class Program {
 			System.out.println();
 			
 			if(whatToDo == 1) {
-				listOfTasks.updateFromCSVtoListOfTasks();
+				//listOfTasks.updateFromCSVtoListOfTasks();
+				listOfTasks.updateFromSQLtoLocalList();
+				//listOfTasks.separateByEisenhower();
 				listOfTasks.separateByEisenhower();
 			}
 			
 			if(whatToDo == 2) {		
 				System.out.println("Enter data about your task:");
-				System.out.print("Task name:");
 				sc.nextLine();
-				name = sc.nextLine();
+				while (true) {
+				System.out.print("Task name:");
+					name = sc.nextLine();
+					if (name.length() < 30) {
+						break;
+					} else {
+						System.out.println("The task name need to be less than 30 character, please try again:");
+					}
+				}
+				
 				System.out.print("Importance:\n[1] Important\n[2] Not important\nType here:"); // I put numbers so the program wont look like too complex for the user
 				while (true) {
 					try {
@@ -138,13 +149,19 @@ public class Program {
 				Task task = new Task(name, date, importance, urgence, status);
 				System.out.println("\n-=-=-\nTask saved\n-=-=-");
 				
+				System.out.println(task.getImportance().toString());
+				
 				listOfTasks.addTask(task);
-				csvReader.updateAllData(listOfTasks);
+				
+				listOfTasks.getAllTasks();
+				//csvReader.updateAllData(listOfTasks);
+				listOfTasks.updateFromLocalListtoSQL();
 			}
 			
 			if (whatToDo == 3) {
 				listOfTasks.deleteAllDone();
-				csvReader.updateAllData(listOfTasks);
+				//csvReader.updateAllData(listOfTasks);
+				listOfTasks.updateFromLocalListtoSQL();
 				
 				System.out.println("-=-=-\nAll tasks 'done' deleted successfully!\n-=-=-");
 			}
@@ -162,7 +179,7 @@ public class Program {
 					while (true) {
 						try {
 							taskId = sc.nextInt();
-							if (taskId >= 0 && taskId < csvReader.numberOfLines()) {
+							if (taskId >= 0 && taskId < listOfTasks.getTasks().size()) {
 								
 								break;
 							}
@@ -187,7 +204,8 @@ public class Program {
 							System.out.print("Please, enter a valid value:");
 						} 	
 					}
-					csvReader.updateAllData(listOfTasks);
+					//csvReader.updateAllData(listOfTasks);
+					listOfTasks.updateFromLocalListtoSQL();
 					System.out.println("\n-=-=-\nStatus of task [" + taskId + "] changed successfully!\n-=-=-");
 				}
 					
@@ -207,7 +225,7 @@ public class Program {
 					while (true) {
 						try {
 							decision = sc.nextInt();
-							if (decision >= 0 && decision < csvReader.numberOfLines()) {
+							if (decision >= 0 && decision < listOfTasks.getTasks().size()) {
 								break;
 							}
 							else {
@@ -219,7 +237,8 @@ public class Program {
 						}
 					}
 					listOfTasks.deleteTaskById(decision);
-					csvReader.updateAllData(listOfTasks);
+					//csvReader.updateAllData(listOfTasks);
+					listOfTasks.updateFromLocalListtoSQL();
 					
 					System.out.println("\n-=-=-\nTask number [" + decision + "] deleted successfully!\n-=-=-");
 				}
@@ -248,8 +267,10 @@ public class Program {
 				}
 				
 				if (decision == 1) {
-					csvReader.resetStorage();
-					listOfTasks.updateFromCSVtoListOfTasks();
+					//csvReader.resetStorage();
+					//listOfTasks.updateFromCSVtoListOfTasks();
+					listOfTasks.deleteAllTasks();
+					listOfTasks.updateFromLocalListtoSQL();
 					System.out.println("\n-=-=-\nStorage reseted successfully!\n-=-=-");
 				}
 				
@@ -258,7 +279,8 @@ public class Program {
 				}
 			}
 			if (whatToDo == 7) {
-				csvReader.updateAllData(listOfTasks);
+				listOfTasks.updateFromLocalListtoSQL();
+				// csvReader.updateAllData(listOfTasks);
 				break;
 			}
 		} // end of big loop
