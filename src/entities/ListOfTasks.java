@@ -1,12 +1,18 @@
 package entities;
 
 import java.io.IOException;
+import java.sql.Connection;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.sql.Statement;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
+import db.DB;
+import db.DbException;
 import entities.enums.ImportancePriority;
 import entities.enums.TaskStatus;
 import entities.enums.UrgencePriority;
@@ -15,7 +21,12 @@ public class ListOfTasks {
 	
 	private List<Task> taskList = new ArrayList<>();
 	
+	Connection conn = null;
+	Statement st = null;
+	ResultSet rs = null;
+	
 	private SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
+	private SimpleDateFormat sqlsdf = new SimpleDateFormat("yyyy/MM/dd");
 	
 	
 	public ListOfTasks() {
@@ -151,6 +162,55 @@ public class ListOfTasks {
 			task.setStatus(TaskStatus.valueOf(List[4]));
 			taskList.add(task);  // updating a task to the taskList
 		}
+	}
+	
+	public void updateFromSQLtoLocalList() throws ParseException { // NÃO ESQUECER DE MUDAR SENHA ANTES DO COMMIT
+		try {
+			taskList.clear();
+			String dateToFormat[];
+			String dateFormated;
+			String List[];
+			conn = DB.getConnection(); // conexão estabelecida NÃO ESQUECER DE FECHAR CONEXÃO
+			st = conn.createStatement(); // statement criado
+			rs = st.executeQuery("select * from alltasks"); // comando enviado para o SQL, armazenando resposta no 'rs'
+			
+			while (rs.next()) { // esse comando é um booleano, e quando não houver outra linha ele vai dar false
+				Task task = new Task();
+				task.setTask(rs.getString("task"));
+				dateToFormat = rs.getString("date").split(" "); // separando a hora da data
+				dateFormated = dateToFormat[0];
+				dateFormated = dateFormated.replace("-", "/");
+				task.setDate(sqlsdf.parse(dateFormated)); // eu formato aqui no formato do sql, mas la na classe task é formatado em padrão BR então ele se ajusta
+				task.setImportance(ImportancePriority.valueOf("IMPORTANT"));
+				task.setUrgence(UrgencePriority.valueOf(rs.getString("urgence").toString().toUpperCase()));
+				task.setStatus(TaskStatus.valueOf(rs.getString("status").toString().toUpperCase()));
+				taskList.add(task);
+			} // primeiro vou deixar por enquanto duas listas, uma local e uma no sql, assim não vou precisar mexer nos comandos de delete e de input. So no de salvar tarefa e carregar
+			
+			
+		} catch (SQLException msg) {
+			throw new DbException(msg.getMessage());
+		}
+		
+	}
+	
+	// vou atualizar o sql daqui mesmo, de linha e linha e a hora do dia eu boto DEFAULT
+	// é so eu pegar a tasklist local e jogar tudo para o SQL
+	public void updateFromLocalListtoSQL() throws ParseException {
+		//ArrayList<String> task = null;
+		try {
+			conn = DB.getConnection();
+			st = conn.createStatement();
+			//st.executeUpdate("truncate table alltasks"); // limpando a tabela para poder inserir todos os dados sem erro
+			for (int i = 0; i<taskList.size(); i++) {
+				String query = String.format("insert into alltasks value (DEFAULT, '" + sqlsdf.format(taskList.get(i).getDate()).toString().replace("/", "-") + "', '" + taskList.get(i).getTask() + "', '" + taskList.get(i).getImportance() + "', '" + taskList.get(i).getUrgence() + "', '" + taskList.get(i).getStatus() + "');"); //, "tasktestnumber1", "important", "urgent", "done" 
+				st.execute(query);
+	
+			}
+		} catch (SQLException e) {
+			throw new DbException(e.getMessage());
+		}
+		
 	}
 
 	@Override
