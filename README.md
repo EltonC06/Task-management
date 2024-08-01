@@ -1,48 +1,56 @@
-# Task Management
-(https://github.com/EltonC06/Task-management/blob/main/LICENSE)
+# Stock Management
 
-# Sobre o projeto  
+(https://github.com/EltonC06/Stock-Management/blob/main/LICENSE)
 
-Task management é uma aplicação back end construída para fins de aprendizado.
+## Sobre o Projeto
 
-A aplicação consiste em um algoritmo que permite ao usuário armazenar tarefas e classificá-las entre Importante ou não importante e Urgente ou não urgente.
-Essa classificação de tarefas permite ao programa separá-las de acordo com princípios da matriz de Eisenhower.
+Stock Management é uma aplicação back end construída para fins de aprendizado.
 
-# Matriz de Eisenhower (somente ilustração)
-![Eisenhower](https://github.com/EltonC06/Task-management/assets/103285152/7621f57e-3c71-4abc-8118-59692eac5ed5)
+A aplicação permite ao usuário gerenciar suas ações, registrando investimentos iniciais e acompanhando o valor atual para calcular os ganhos.
 
+## Tecnologias Utilizadas
 
-# Tecnologias utilizadas
-## Back end
+### Back End
 - Java
+- MySQL
 
-# Como executar o projeto
+## Como Executar o Projeto
 
-Pré-requisitos: Java 17
+### Pré-requisitos
+- IDE de Java (Preferencialmente Eclipse)
+- Java 17
+- MySQL
 
-```bash
-# clonar repositório
-git clone git@github.com:EltonC06/Task-management.git
+### Passo a Passo
 
-# entrar na pasta do projeto back end em alguma IDE do Java (Testado apenas no Eclipse pelo desenvolvedor)
-src -> application -> program
+1. **Clonar Repositório**
+   ```bash
+   git clone git@github.com:EltonC06/Stock-Management.git
+   ```
 
-# executar o programa
-```
+2. **Configurar Banco de Dados**
+   - Crie um banco de dados MySQL e configure as suas credenciais (URL do banco de dados, usuário, senha) no arquivo de configuração do projeto: db.properties.
 
-# Notas
+3. **Entrar na Pasta do Projeto**
+   - Abra o projeto em uma IDE Java (projeto testado somente no Eclipse).
 
-Programa somente testado em Windows
+4. **Executar o Programa**
+   - Navegue até `src -> application -> Program` e execute o programa.
 
-Caso queira mudar o local de armazenamento das tarefas você pode acessar:
-src -> entities -> CsvLink e mudar a função csvPathLink pelo caminho do arquivo desejado
+### Observações
 
-# Como você pode contribuir
+- O programa foi testado apenas no Windows.
+- Para modificar o local de armazenamento dos registros no arquivo csv, acesse:
+  `src -> entities -> CsvLink` e altere o método `csvPathLink` com o caminho desejado.
 
-Transformar a aplicação de texto no console para imagens em uma janela ilustrando o gráfico Eisenhower e as respectivas tasks nos seus lugares
+## Como Você Pode Contribuir
 
-# Autor
+- Melhorar a validação de entrada de dados para evitar erros.
+- Adicionar funcionalidades de exportação de dados para CSV.
+- Implementar uma interface gráfica para visualização das ações e ganhos.
+
+## Autor
 
 Elton da Costa Oliveira
 
-https://www.linkedin.com/in/elton-da-costa/
+[LinkedIn](https://www.linkedin.com/in/elton-da-costa/)
