@@ -1,9 +1,9 @@
 package application;
 
-import java.util.Date;
-import java.util.InputMismatchException;
 import java.io.IOException;
 import java.text.ParseException;
+import java.util.Date;
+import java.util.InputMismatchException;
 import java.util.Locale;
 import java.util.Scanner;
 
@@ -16,7 +16,7 @@ import entities.enums.UrgencePriority;
 
 public class Program {
 
-	public static void main(String[] args) throws ParseException, IOException {
+	public static void main(String[] args) {
 		
 		Locale.setDefault(Locale.US);
 		Scanner sc = new Scanner(System.in);
@@ -34,8 +34,13 @@ public class Program {
 		ListOfTasks listOfTasks = new ListOfTasks();
 		CsvReader csvReader = new CsvReader();
 		
-		//listOfTasks.updateFromCSVtoListOfTasks();
-		listOfTasks.updateFromSQLtoLocalList();
+		// listOfTasks.updateFromCSVtoListOfTasks(); use only in emergency
+		
+		try {
+			listOfTasks.updateFromSQLtoLocalList();
+		} catch (ParseException e) {
+			e.printStackTrace();
+		}
 		
 		System.out.println("-=-=-=-=-=-=-=-=-=-=-");
 		System.out.println("WELCOME to the simple task management application!");
@@ -69,9 +74,14 @@ public class Program {
 			System.out.println();
 			
 			if(whatToDo == 1) {
-				//listOfTasks.updateFromCSVtoListOfTasks();
-				listOfTasks.updateFromSQLtoLocalList();
-				//listOfTasks.separateByEisenhower();
+				// listOfTasks.updateFromCSVtoListOfTasks();   use only in emergence
+				
+				try {
+					listOfTasks.updateFromSQLtoLocalList();
+				} catch (ParseException e) {
+					e.printStackTrace();
+				}
+				
 				listOfTasks.separateByEisenhower();
 			}
 			
@@ -148,20 +158,32 @@ public class Program {
 				
 				Task task = new Task(name, date, importance, urgence, status);
 				System.out.println("\n-=-=-\nTask saved\n-=-=-");
-				
-				System.out.println(task.getImportance().toString());
+			
 				
 				listOfTasks.addTask(task);
 				
-				listOfTasks.getAllTasks();
-				//csvReader.updateAllData(listOfTasks);
-				listOfTasks.updateFromLocalListtoSQL();
+				try {
+					csvReader.updateAllData(listOfTasks);
+					listOfTasks.updateFromLocalListtoSQL();
+				} catch (IOException | ParseException e) {
+					e.printStackTrace();
+				}
+				
+				
 			}
 			
 			if (whatToDo == 3) {
-				listOfTasks.deleteAllDone();
-				//csvReader.updateAllData(listOfTasks);
-				listOfTasks.updateFromLocalListtoSQL();
+				try {
+					listOfTasks.deleteAllDone();
+					csvReader.updateAllData(listOfTasks);
+					listOfTasks.updateFromLocalListtoSQL();
+				} catch (IOException | ParseException e) {
+					e.printStackTrace();
+				}
+
+
+				
+				
 				
 				System.out.println("-=-=-\nAll tasks 'done' deleted successfully!\n-=-=-");
 			}
@@ -204,8 +226,14 @@ public class Program {
 							System.out.print("Please, enter a valid value:");
 						} 	
 					}
-					//csvReader.updateAllData(listOfTasks);
-					listOfTasks.updateFromLocalListtoSQL();
+					try {
+						csvReader.updateAllData(listOfTasks);
+						listOfTasks.updateFromLocalListtoSQL();
+					} catch (IOException | ParseException e) {
+						e.printStackTrace();
+					}
+					
+					
 					System.out.println("\n-=-=-\nStatus of task [" + taskId + "] changed successfully!\n-=-=-");
 				}
 					
@@ -237,8 +265,14 @@ public class Program {
 						}
 					}
 					listOfTasks.deleteTaskById(decision);
-					//csvReader.updateAllData(listOfTasks);
-					listOfTasks.updateFromLocalListtoSQL();
+					try {
+						csvReader.updateAllData(listOfTasks);
+						listOfTasks.updateFromLocalListtoSQL();
+					} catch (IOException | ParseException e) {
+						e.printStackTrace();
+					}
+					
+					
 					
 					System.out.println("\n-=-=-\nTask number [" + decision + "] deleted successfully!\n-=-=-");
 				}
@@ -267,11 +301,16 @@ public class Program {
 				}
 				
 				if (decision == 1) {
-					//csvReader.resetStorage();
-					//listOfTasks.updateFromCSVtoListOfTasks();
-					listOfTasks.deleteAllTasks();
-					listOfTasks.updateFromLocalListtoSQL();
-					System.out.println("\n-=-=-\nStorage reseted successfully!\n-=-=-");
+					try {
+						csvReader.resetStorage();
+						listOfTasks.deleteAllTasks();
+						listOfTasks.updateFromLocalListtoSQL();
+					} catch (IOException | ParseException e) {
+						e.printStackTrace();
+					}
+
+					System.out.
+					println("\n-=-=-\nStorage reseted successfully!\n-=-=-");
 				}
 				
 				else {
@@ -279,8 +318,13 @@ public class Program {
 				}
 			}
 			if (whatToDo == 7) {
-				listOfTasks.updateFromLocalListtoSQL();
-				// csvReader.updateAllData(listOfTasks);
+				try {
+					listOfTasks.updateFromLocalListtoSQL();
+					csvReader.updateAllData(listOfTasks);
+				} catch (ParseException | IOException e) {
+					e.printStackTrace();
+				}
+
 				break;
 			}
 		} // end of big loop
